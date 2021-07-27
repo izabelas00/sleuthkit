@@ -89,7 +89,7 @@ uint32_t
 nt2unixtime(uint64_t ntdate)
 {
 // (369*365 + 89) * 24 * 3600 * 10000000
-#define	NSEC_BTWN_1601_1970	(uint64_t)(116444736000000000ULL)
+#define NSEC_BTWN_1601_1970 (uint64_t)(116444736000000000ULL)
 
     ntdate -= (uint64_t) NSEC_BTWN_1601_1970;
     ntdate /= (uint64_t) 10000000;
@@ -237,7 +237,7 @@ ntfs_dinode_lookup(NTFS_INFO * a_ntfs, char *a_buf, TSK_INUM_T a_mftnum)
                     tsk_fprintf(stderr,
                         "ntfs_dinode_lookup: Found in offset: %"
                         PRIuDADDR "  size: %" PRIuDADDR " at offset: %"
-						PRIdOFF "\n", data_run->addr, data_run->len,
+                        PRIdOFF "\n", data_run->addr, data_run->len,
                         offset);
 
                 /* special case where the MFT entry crosses
@@ -269,7 +269,7 @@ ntfs_dinode_lookup(NTFS_INFO * a_ntfs, char *a_buf, TSK_INUM_T a_mftnum)
                 if (tsk_verbose)
                     tsk_fprintf(stderr,
                         "ntfs_dinode_lookup: Entry address at: %"
-						PRIdOFF "\n", mftaddr_b);
+                        PRIdOFF "\n", mftaddr_b);
                 break;
             }
 
@@ -300,7 +300,7 @@ ntfs_dinode_lookup(NTFS_INFO * a_ntfs, char *a_buf, TSK_INUM_T a_mftnum)
             }
             tsk_error_set_errstr2
                 ("ntfs_dinode_lookup: Error reading MFT Entry (part 1) at %"
-					PRIdOFF, mftaddr_b);
+                    PRIdOFF, mftaddr_b);
             return TSK_ERR;
         }
 
@@ -316,7 +316,7 @@ ntfs_dinode_lookup(NTFS_INFO * a_ntfs, char *a_buf, TSK_INUM_T a_mftnum)
             }
             tsk_error_set_errstr2
                 ("ntfs_dinode_lookup: Error reading MFT Entry (part 2) at %"
-					PRIdOFF, mftaddr2_b);
+                    PRIdOFF, mftaddr2_b);
             return TSK_ERR;
         }
     }
@@ -333,7 +333,7 @@ ntfs_dinode_lookup(NTFS_INFO * a_ntfs, char *a_buf, TSK_INUM_T a_mftnum)
             }
             tsk_error_set_errstr2
                 ("ntfs_dinode_lookup: Error reading MFT Entry at %"
-					PRIdOFF, mftaddr_b);
+                    PRIdOFF, mftaddr_b);
             return TSK_ERR;
         }
     }
@@ -699,8 +699,8 @@ ntfs_make_data_run(NTFS_INFO * ntfs, TSK_OFF_T start_vcn,
         if (tsk_verbose)
             tsk_fprintf(stderr,
                 "ntfs_make_data_run: Signed addr_offset: %"
-				PRId64 " Previous address: %"
-				PRIuDADDR "\n", addr_offset, prev_addr);
+                PRId64 " Previous address: %"
+                PRIuDADDR "\n", addr_offset, prev_addr);
 
         /* The NT 4.0 version of NTFS uses an offset of -1 to represent
          * a hole, so add the sparse flag and make it look like the 2K
@@ -2420,7 +2420,7 @@ ntfs_proc_attrseq(NTFS_INFO * ntfs,
      * process the attribute list
      */
     if (fs_attr_attrl) {
-		TSK_RETVAL_ENUM retval;
+        TSK_RETVAL_ENUM retval;
         if (a_seen_inum_list != NULL) {
             tsk_stack_push(a_seen_inum_list, a_attrinum);
         }
@@ -3650,11 +3650,11 @@ ntfs_proc_sii(TSK_FS_INFO * fs, NTFS_SXX_BUFFER * sii_buffer)
         // copy records into NTFS_INFO
         while ((uintptr_t)sii + sizeof(ntfs_attr_sii) <= idx_buffer_end) {
 /*
-			if ((tsk_getu16(fs->endian,sii->size) == 0x14) &&
-				(tsk_getu16(fs->endian,sii->data_off) == 0x14) &&
-				(tsk_getu16(fs->endian,sii->ent_size) == 0x28)
-				)
-			{
+            if ((tsk_getu16(fs->endian,sii->size) == 0x14) &&
+                (tsk_getu16(fs->endian,sii->data_off) == 0x14) &&
+                (tsk_getu16(fs->endian,sii->ent_size) == 0x28)
+                )
+            {
 */
             /* make sure we don't go over bounds of ntfs->sii_data.buffer */
             if ((ntfs->sii_data.used + 1) * sizeof(ntfs_attr_sii) > ntfs->sii_data.size) {
@@ -3669,19 +3669,19 @@ ntfs_proc_sii(TSK_FS_INFO * fs, NTFS_SXX_BUFFER * sii_buffer)
             ntfs->sii_data.used++;
 
 /*
-				printf("Security id %d is at offset 0x%I64x for 0x%x bytes\n", tsk_getu32(fs->endian,sii->key_sec_id),
-																		   tsk_getu64(fs->endian,sii->sec_desc_off),
-																		   tsk_getu32(fs->endian,sii->sec_desc_size));
-			}
-			else
-			{
-				printf("\n\tOffset to data %x Size of data %x Size of Index entry %x\n", tsk_getu16(fs->endian,sii->data_off),
-																					 tsk_getu16(fs->endian,sii->size),
-																					 tsk_getu16(fs->endian,sii->ent_size));
-				printf("\tSecurity id %d is at offset 0x%I64x for 0x%x bytes\n\n", tsk_getu32(fs->endian,sii->key_sec_id),
-																		   tsk_getu64(fs->endian,sii->sec_desc_off),
-																		   tsk_getu32(fs->endian,sii->sec_desc_size));
-			}
+                printf("Security id %d is at offset 0x%I64x for 0x%x bytes\n", tsk_getu32(fs->endian,sii->key_sec_id),
+                                                                           tsk_getu64(fs->endian,sii->sec_desc_off),
+                                                                           tsk_getu32(fs->endian,sii->sec_desc_size));
+            }
+            else
+            {
+                printf("\n\tOffset to data %x Size of data %x Size of Index entry %x\n", tsk_getu16(fs->endian,sii->data_off),
+                                                                                     tsk_getu16(fs->endian,sii->size),
+                                                                                     tsk_getu16(fs->endian,sii->ent_size));
+                printf("\tSecurity id %d is at offset 0x%I64x for 0x%x bytes\n\n", tsk_getu32(fs->endian,sii->key_sec_id),
+                                                                           tsk_getu64(fs->endian,sii->sec_desc_off),
+                                                                           tsk_getu32(fs->endian,sii->sec_desc_size));
+            }
 */
             sii++;
         }
@@ -4479,7 +4479,12 @@ ntfs_istat(TSK_FS_INFO * fs, TSK_FS_ISTAT_FLAG_ENUM istat_flags, FILE * hFile,
     ntfs_mft *mft;
     char timeBuf[128];
     int idx;
-
+    //set to 1 if reparse point is present in attributes
+    int reparsePoint = 0;
+    //set to the index of the data flag when reparse point == 1
+    int dataFlagIndex = 0;
+    //set to index of reparse point flag when reparse point == 1
+    int reparsePointFlagIndex = 0;
     // clean up any error messages that are lying around
     tsk_error_reset();
 
@@ -4667,8 +4672,10 @@ ntfs_istat(TSK_FS_INFO * fs, TSK_FS_ISTAT_FLAG_ENUM istat_flags, FILE * hFile,
             tsk_fprintf(hFile, "%sTemp", a++ == 0 ? "" : ", ");
         if (flags & NTFS_FNAME_FLAGS_SPAR)
             tsk_fprintf(hFile, "%sSparse", a++ == 0 ? "" : ", ");
-        if (flags & NTFS_FNAME_FLAGS_REP)
+        if (flags & NTFS_FNAME_FLAGS_REP) {
             tsk_fprintf(hFile, "%sReparse Point", a++ == 0 ? "" : ", ");
+            reparsePoint = 1;
+        }
         if (flags & NTFS_FNAME_FLAGS_COMP)
             tsk_fprintf(hFile, "%sCompressed", a++ == 0 ? "" : ", ");
         if (flags & NTFS_FNAME_FLAGS_ENC)
@@ -4894,49 +4901,56 @@ ntfs_istat(TSK_FS_INFO * fs, TSK_FS_ISTAT_FLAG_ENUM istat_flags, FILE * hFile,
 
             /* print the layout if it is non-resident and not "special" */
             if (fs_attr->flags & TSK_FS_ATTR_NONRES) {
-                NTFS_PRINT_ADDR print_addr;
+                //if not a data point with reparse flag present
+                if(!(fs_attr->type == TSK_FS_ATTR_TYPE_NTFS_DATA && reparsePoint == 1)) {
+                    NTFS_PRINT_ADDR print_addr;
 
-                tsk_fprintf(hFile,
-                    "Type: %s (%" PRIu32 "-%" PRIu16
-                    ")   Name: %s   Non-Resident%s%s%s   size: %"
-					PRIdOFF "  init_size: %" PRIdOFF "\n", type,
-                    fs_attr->type, fs_attr->id,
-                    (fs_attr->name) ? fs_attr->name : "N/A",
-                    (fs_attr->flags & TSK_FS_ATTR_ENC) ? ", Encrypted" :
-                    "",
-                    (fs_attr->flags & TSK_FS_ATTR_COMP) ? ", Compressed" :
-                    "",
-                    (fs_attr->flags & TSK_FS_ATTR_SPARSE) ? ", Sparse" :
-                    "", fs_attr->size, fs_attr->nrd.initsize);
-                if (istat_flags & TSK_FS_ISTAT_RUNLIST) {
-                    if (tsk_fs_attr_print(fs_attr, hFile)) {
-                        tsk_fprintf(hFile, "\nError creating run lists\n");
-                        tsk_error_print(hFile);
-                        tsk_error_reset();
+                    tsk_fprintf(hFile,
+                        "Type: %s (%" PRIu32 "-%" PRIu16
+                        ")   Name: %s   Non-Resident%s%s%s   size: %"
+                        PRIdOFF "  init_size: %" PRIdOFF "\n", type,
+                        fs_attr->type, fs_attr->id,
+                        (fs_attr->name) ? fs_attr->name : "N/A",
+                        (fs_attr->flags & TSK_FS_ATTR_ENC) ? ", Encrypted" :
+                        "",
+                        (fs_attr->flags & TSK_FS_ATTR_COMP) ? ", Compressed" :
+                        "",
+                        (fs_attr->flags & TSK_FS_ATTR_SPARSE) ? ", Sparse" :
+                        "", fs_attr->size, fs_attr->nrd.initsize);
+                    if (istat_flags & TSK_FS_ISTAT_RUNLIST) {
+                        if (tsk_fs_attr_print(fs_attr, hFile)) {
+                            tsk_fprintf(hFile, "\nError creating run lists\n");
+                            tsk_error_print(hFile);
+                            tsk_error_reset();
+                        }
                     }
-                }
-                else {
-                    print_addr.idx = 0;
-                    print_addr.hFile = hFile;
-                    if (tsk_fs_file_walk_type(fs_file, fs_attr->type,
-                        fs_attr->id,
-                        (TSK_FS_FILE_WALK_FLAG_AONLY |
-                            TSK_FS_FILE_WALK_FLAG_SLACK),
-                        print_addr_act, (void *)&print_addr)) {
-                        tsk_fprintf(hFile, "\nError walking file\n");
-                        tsk_error_print(hFile);
-                        tsk_error_reset();
+                    else {
+                        print_addr.idx = 0;
+                        print_addr.hFile = hFile;
+                        if (tsk_fs_file_walk_type(fs_file, fs_attr->type,
+                            fs_attr->id,
+                            (TSK_FS_FILE_WALK_FLAG_AONLY |
+                                TSK_FS_FILE_WALK_FLAG_SLACK),
+                            print_addr_act, (void *)&print_addr)) {
+                            tsk_fprintf(hFile, "\nError walking file\n");
+                            tsk_error_print(hFile);
+                            tsk_error_reset();
+                        }
+                        if (print_addr.idx != 0)
+                            tsk_fprintf(hFile, "\n");
                     }
-                    if (print_addr.idx != 0)
-                        tsk_fprintf(hFile, "\n");
+                } else {
+                    dataFlagIndex = i;
                 }
-                
             }
             else {
+                if(fs_attr->type == TSK_FS_ATTR_TYPE_NTFS_REPARSE) {
+                    reparsePointFlagIndex = i;
+                }
                 tsk_fprintf(hFile,
                     "Type: %s (%" PRIu32 "-%" PRIu16
                     ")   Name: %s   Resident%s%s%s   size: %"
-					PRIdOFF "\n", type, fs_attr->type,
+                    PRIdOFF "\n", type, fs_attr->type,
                     fs_attr->id,
                     (fs_attr->name) ? fs_attr->name : "N/A",
                     (fs_attr->flags & TSK_FS_ATTR_ENC) ? ", Encrypted"
@@ -4948,6 +4962,41 @@ ntfs_istat(TSK_FS_INFO * fs, TSK_FS_ISTAT_FLAG_ENUM istat_flags, FILE * hFile,
 
             }
         }
+    }
+
+    if(reparsePoint == 1){
+        char type[512];
+        const TSK_FS_ATTR *fs_data_attr =
+            tsk_fs_file_attr_get_idx(fs_file, dataFlagIndex);
+        if (ntfs_attrname_lookup(fs, fs_attr->type, type, 512)) {
+            tsk_fprintf(hFile, "error looking attribute name\n");
+        }
+        const TSK_FS_ATTR *fs_rp_attr =
+            tsk_fs_file_attr_get_idx(fs_file, reparsePointFlagIndex);
+        if (ntfs_attrname_lookup(fs, fs_attr->type, type, 512)) {
+            printf(hFile, "error looking attribute name\n");
+        }
+        const TSK_FS_ATTR_REPARSE_POINT *fs_rp_file = tsk_fs_rp_list_get(fs_rp_attr);
+        tsk_fprintf(hFile,
+            "Type: %s (%" PRIu32 "-%" PRIu16
+            ")   Name: %s   Non-Resident%s%s%s   size: %"
+            PRIdOFF "  init_size: %" PRIdOFF "\n", type,
+            fs_data_attr->type, fs_attr->id,
+            (fs_data_attr->name) ? fs_attr->name : "N/A",
+            (fs_data_attr->flags & TSK_FS_ATTR_ENC) ? ", Encrypted" :
+            "",
+            (fs_data_attr->flags & TSK_FS_ATTR_COMP) ? ", Compressed" :
+            "",
+            (fs_data_attr->flags & TSK_FS_ATTR_SPARSE) ? ", Sparse" :
+            "", fs_rp_file->file_length, fs_data_attr->nrd.initsize);
+            if (istat_flags & TSK_FS_ISTAT_RUNLIST) {
+                if (tsk_fs_attr_print(fs_data_attr, hFile)) {
+                    tsk_fprintf(hFile, "\nError creating run lists\n");
+                    tsk_error_print(hFile);
+                    tsk_error_reset();
+                }
+            }
+        free(fs_rp_file);
     }
 
     tsk_fs_file_close(fs_file);

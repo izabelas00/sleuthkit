@@ -249,6 +249,37 @@ tsk_fs_attrlist_get(const TSK_FS_ATTRLIST * a_fs_attrlist,
     }
 }
 
+//not sure about how to do this hear I want to populate the fs_attr_cur based on the attribute given
+//need to find a way to extract the bits from the attribute
+const TSK_FS_ATTR_REPARSE_POINT *
+tsk_fs_rp_list_get(const TSK_FS_ATTR * fs_attr,
+    TSK_FS_ATTR_TYPE_ENUM a_type)
+{
+    TSK_FS_ATTR_REPARSE_POINT *fs_attr_cur = calloc(sizeof(TSK_FS_ATTR_REPARSE_POINT), 1);
+    TSK_FS_ATTR_FLAG_ENUM * fs_flags;
+    if (!fs_attr) {
+        tsk_error_reset();
+        tsk_error_set_errno(TSK_ERR_FS_ARG);
+        tsk_error_set_errstr("tsk_fs_attrlist_get: Null attribute pointer");
+        return NULL;
+    }
+    
+    if (fs_attr->type == TSK_FS_ATTR_TYPE_NTFS_DATA) {
+        memset(fs_attr_cur->file_length, (char *) fs_attr + TSK_FS_REPARSE_POINT_ATTR_FILE_LENGTH, 4);
+        memset(fs_attr_cur->chunk_store_identifier, (char *)fs_attr + TSK_FS_REPARSE_POINT_ATTR_CHUNKSTORE_IDENTIFIER, 16);
+        memset(fs_attr_cur->stream_header, (char *) fs_attr + TSK_FS_REPARSE_POINT_ATTR_STREAM_HEADER, 30);
+        return fs_attr_cur;
+    }
+
+    if (!fs_attr_cur) {
+        tsk_error_set_errno(TSK_ERR_FS_ATTR_NOTFOUND);
+        tsk_error_set_errstr("tsk_fs_attrlist_get: Attribute %d not found",
+            a_type);
+        return NULL;
+    }
+    return fs_attr_cur;
+}
+
 /**
  * \internal
  * Search the attribute list of TSK_FS_ATTR structures for an entry with a given

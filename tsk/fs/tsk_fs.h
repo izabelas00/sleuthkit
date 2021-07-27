@@ -25,12 +25,12 @@
 /* LICENSE
 * .ad
 * .fi
-*	This software is distributed under the IBM Public License.
+*   This software is distributed under the IBM Public License.
 * AUTHOR(S)
-*	Wietse Venema
-*	IBM T.J. Watson Research
-*	P.O. Box 704
-*	Yorktown Heights, NY 10598, USA
+*   Wietse Venema
+*   IBM T.J. Watson Research
+*   P.O. Box 704
+*   Yorktown Heights, NY 10598, USA
 --*/
 
 /**
@@ -258,6 +258,47 @@ extern "C" {
         TSK_FS_ATTR_TYPE_APFS_EXT_ATTR = TSK_FS_ATTR_TYPE_HFS_EXT_ATTR,
         TSK_FS_ATTR_TYPE_APFS_COMP_REC = TSK_FS_ATTR_TYPE_HFS_COMP_REC,
     } TSK_FS_ATTR_TYPE_ENUM;
+
+    //locations of attributes for reparse point information in a MFT file entry
+    typedef enum {
+        TSK_FS_REPARSE_POINT_ATTR_FILE_LENGTH = 0x28,
+        TSK_FS_REPARSE_POINT_ATTR_CHUNKSTORE_IDENTIFIER = 0x38,
+        TSK_FS_REPARSE_POINT_ATTR_STREAM_HEADER = 0x78,
+    } TSK_FS_ATTR_REPARSE_POINT_FILE_ENTRY;
+
+    //locations of attributes for reparse point information in a hash sequnece entry
+    typedef enum {
+        TSK_FS_REPARSE_POINT_CKHR_IDENTIFIER = 0x00,
+        TSK_FS_REPARSE_POINT_ATTR_STREAM_HEADER = 0x38,
+        TSK_FS_REPARSE_POINT_ATTR_HASH_SEQUENCE_NUMBER = 0x70,
+        TSK_FS_REPARSE_POINT_ATTR_DATA_CHUNK_POSITION = 0x78,
+        TSK_FS_REPARSE_POINT_ATTR_HASH_SEQUENCE = 0x88,
+        TSK_FS_REPARSE_POINT_ATTR_CHUNK_LENGTH = 0xa8,
+    } TSK_FS_ATTR_REPARSE_POINT_STREAM_CONTAINER_ENTRY;
+
+    //locations of attributes for reparse point information in data entry
+    typedef enum {
+        TSK_FS_REPARSE_POINT_CKHR_IDENTIFIER = 0x00,
+        TSK_FS_REPARSE_POINT_DATA_START = 0xC0,
+    } TSK_FS_ATTR_REPARSE_POINT_DATA_CONTAINER_ENTRY;
+
+
+//i need a TSK_FS_ATTR_REPARSE_POINT here
+// need to have the file length, chunk store identifier, stream header, hash sequence number (list), data chunk position, 
+//hash sequence, chunk length, and data
+#define TSK_FS_ATTR_REPARSE_POINT_DEFAULT 0
+    typedef struct TSK_FS_ATTR_REPARSE_POINT TSK_FS_ATTR_REPARSE_POINT;
+    struct TSK_FS_ATTR_REPARSE_POINT {
+        TSK_OFF_T file_length;
+        TSK_OFF_T chunk_store_identifier;
+        TSK_OFF_T stream_header;
+        TSK_OFF_T hash_sequence_number;
+        TSK_OFF_T data_chunk_position;
+        TSK_OFF_T hash_sequence;
+        TSK_OFF_T chunk_length;
+        //I don't think this is the best way to store data
+        char* data;
+    };
 
 #define TSK_FS_ATTR_ID_DEFAULT  0       ///< Default Data ID used if file system does not assign one.
 
@@ -744,13 +785,13 @@ extern "C" {
 
     extern uint8_t tsk_fs_file_get_owner_sid(TSK_FS_FILE *, char **);
 
-	typedef struct {
-		TSK_BASE_HASH_ENUM flags;
-		unsigned char md5_digest[16];
-		unsigned char sha1_digest[20];
-	} TSK_FS_HASH_RESULTS;
+    typedef struct {
+        TSK_BASE_HASH_ENUM flags;
+        unsigned char md5_digest[16];
+        unsigned char sha1_digest[20];
+    } TSK_FS_HASH_RESULTS;
 
-	extern uint8_t tsk_fs_file_hash_calc(TSK_FS_FILE *, TSK_FS_HASH_RESULTS *, TSK_BASE_HASH_ENUM);
+    extern uint8_t tsk_fs_file_hash_calc(TSK_FS_FILE *, TSK_FS_HASH_RESULTS *, TSK_BASE_HASH_ENUM);
 
     //@}
 
@@ -1126,7 +1167,7 @@ extern "C" {
         TSK_FS_FLS_DIR = 0x08,
         TSK_FS_FLS_FULL = 0x10,
         TSK_FS_FLS_MAC = 0x20,
-		TSK_FS_FLS_HASH = 0x40
+        TSK_FS_FLS_HASH = 0x40
     };
     typedef enum TSK_FS_FLS_FLAG_ENUM TSK_FS_FLS_FLAG_ENUM;
     extern uint8_t tsk_fs_fls(TSK_FS_INFO * fs,
